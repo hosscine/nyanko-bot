@@ -9,6 +9,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "botkit": "^0.6.19"
+    "botkit": "^0.6.19",
+    "dotenv": "^6.1.0"
   }
 }
