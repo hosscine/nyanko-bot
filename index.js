@@ -2,6 +2,7 @@
 // forever start index.js
 
 let Botkit = require('botkit')
+let R = require("r-script")
 require("dotenv").config()
 
 // initialize
@@ -21,11 +22,11 @@ let notifDay = function() {
 }
 
 let notifTime = function() {
+  let out = R("scraping.R").callSync()
   bot.say({
     channel: "bot-notification",
-    text: "始まるよ!"    
+    text: out
   })
 }
 
-notifDay()
 notifTime()
