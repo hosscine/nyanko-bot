@@ -44,7 +44,6 @@ function deleteMessage() {
   }
 
   const ts = messages.shift();
-  console.log(ts)
 
   https.get(deleteApiUrl + ts, function (res) {
 
