@@ -3,6 +3,7 @@
 
 let Botkit = require('botkit')
 let moment = require("moment")
+let CronJob = require("cron").CronJob
 require("dotenv").config()
 
 let check = require("./assets/json/check_list.json")
@@ -43,6 +44,10 @@ let bot = controller.spawn({ token: process.env.DB_TOKEN })
 // hear the direct message
 controller.hears(["hello"], ["direct_message", "direct_mention", "mention"],
   (bot, message) => bot.reply(message, 'hello! I am bot!!'))
+
+new CronJob("* 05 02 * * *", () => {
+  console.log("hello")
+}, null, true)
 
 let notifDay = function () {
   bot.say({
