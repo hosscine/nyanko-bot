@@ -14,6 +14,19 @@ let check = [true, false, false, true,
   false, false, false,
   false, false, false, false]
 
+let getGuerrilla = function () {
+  let out = R("scraping.R")
+    .data(check)
+    .callSync()
+  return out
+}
+
+let getMonthlyGerrilla = function () {
+  let out = R("test.R")
+    .callSync()
+  return out
+}
+
 // initialize
 let controller = Botkit.slackbot()
 let bot = controller.spawn({ token: process.env.DB_TOKEN })
@@ -31,14 +44,10 @@ let notifDay = function () {
 }
 
 let notifTime = function () {
-  let out = R("scraping.R")
-    .data(check)
-    .callSync()
-  for (let event of out)
-    bot.say({
-      channel: "bot-notification",
-      text: event.time + " " + names[event.name - 1]
-    })
+  bot.say({
+    channel: "bot-notification",
+    text: event.time + " " + names[event.name - 1]
+  })
 }
 
-notifTime()
+console.log(getGuerrilla())
