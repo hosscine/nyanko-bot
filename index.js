@@ -36,6 +36,12 @@ let parseWeek = function (event) {
   return events
 }
 
+let formatDayMessage = function (events) {
+  let header = "今日のイベントはこんな感じにゃ"
+  let contents = events.reduce((a, e) => a + e.time + " " + e.name + "\n", "")
+  return header + contents
+}
+
 // initialize
 let controller = Botkit.slackbot()
 let bot = controller.spawn({ token: process.env.DB_TOKEN })
@@ -45,8 +51,16 @@ let bot = controller.spawn({ token: process.env.DB_TOKEN })
 controller.hears(["hello"], ["direct_message", "direct_mention", "mention"],
   (bot, message) => bot.reply(message, 'hello! I am bot!!'))
 
-new CronJob("* 05 02 * * *", () => {
-  console.log("hello")
+new CronJob("00 00 00 * * *", () => {
+  let now = moment()
+  let mday = parseInt(now.format("DD"))
+  let wday = parseInt(now.format("E"))
+  let events = getDayGuerrilla(mday, wday)
+  let message = formatDayMessage(events)
+  bot.say({
+    channel: "bot-notification",
+    text: message
+  })
 }, null, true)
 
 let notifDay = function () {
@@ -62,5 +76,3 @@ let notifTime = function () {
     text: event.time + " " + names[event.name - 1]
   })
 }
-
-console.log(getDayGuerrilla(11, 1))
