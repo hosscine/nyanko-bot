@@ -2,30 +2,11 @@
 // forever start index.js
 
 let Botkit = require('botkit')
-let R = require("r-script")
 require("dotenv").config()
 
-let names = ["にゃんチケ☆チャンス！", "ゲリラ月曜ステージ", "", "ゲリラ経験値にゃ！",
-  "トレジャー☆フェスティバル（日本編）", "超ゲリラ経験値にゃ！", "レンガと宇宙石の洞窟",
-  "備長炭と謎の骨の島", "羽根と歯車と黄金の岬", "トレジャー☆フェスティバル（未来編）",
-  "ゲリラ火曜ステージ", "ゲリラ水曜ステージ", "ゲリラ木曜ステージ", "ゲリラ金曜ステージ"]
-let check = [true, false, false, true,
-  false, false, false,
-  false, false, false,
-  false, false, false, false]
-
-let getGuerrilla = function () {
-  let out = R("scraping.R")
-    .data(check)
-    .callSync()
-  return out
-}
-
-let getMonthlyGerrilla = function () {
-  let out = R("test.R")
-    .callSync()
-  return out
-}
+let check = require("./assets/json/check_list.json")
+let monthly = require("./assets/json/monthly_guerrilla.json")
+let weekly = require("./assets/json/weekly_guerrilla.json")
 
 // initialize
 let controller = Botkit.slackbot()
@@ -50,4 +31,4 @@ let notifTime = function () {
   })
 }
 
-console.log(getGuerrilla())
+console.log(check)
