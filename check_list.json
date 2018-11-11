@@ -1,0 +1,62 @@
+{
+  "ticket": {
+    "name": "にゃんチケ☆チャンス！",
+    "notify": true
+  },
+  "kaba": {
+    "name": "逆襲のカバちゃん",
+    "notify": false
+  },
+  "kaoru": {
+    "name": "逆襲のカオル君",
+    "notify": false
+  },
+  "exp": {
+    "name": "ゲリラ経験値にゃ！",
+    "notify": true
+  },
+  "exp-super": {
+    "name": "超ゲリラ経験値にゃ！",
+    "notify": false
+  },
+  "trs-ja": {
+    "name": "トレジャー☆フェスティバル（日本編）",
+    "notify": false
+  },
+  "trs-fu": {
+    "name": "トレジャー☆フェスティバル（未来編）",
+    "notify": false
+  },
+  "mat-brick": {
+    "name": "レンガと宇宙石の洞窟",
+    "notify": false
+  },
+  "mat-coal": {
+    "name": "備長炭と謎の骨の島",
+    "notify": false
+  },
+  "mat-wing": {
+    "name": "羽根と歯車と黄金の岬",
+    "notify": false
+  },
+  "tuesday": {
+    "name": "ゲリラ火曜ステージ",
+    "notify": false
+  },
+  "wednesday": {
+    "name": "ゲリラ水曜ステージ",
+    "notify": false
+  },
+  "thursday": {
+    "name": "ゲリラ木曜ステージ",
+    "notify": false
+  },
+  "friday": {
+    "name": "ゲリラ金曜ステージ",
+    "notify": false
+  },
+  "monday": {
+    "name": "ゲリラ月曜ステージ",
+    "notify": false
+  }
+}
