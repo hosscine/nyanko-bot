@@ -5,74 +5,52 @@ let Botkit = require('botkit')
 let moment = require("moment")
 let CronJob = require("cron").CronJob
 require("dotenv").config()
+require("./assets/js/nyanko.js")
 
 let check = require("./assets/json/check_list.json")
 let monthly = require("./assets/json/monthly_guerrilla.json")
 let weekly = require("./assets/json/weekly_guerrilla.json")
 
-let getDayGuerrilla = function (mday, wday) {
-  let events = []
-
-  for (let event of weekly)
-    if (event.event[0] && event.wday === wday)
-      events = events.concat(parseWeek(event))
-
-  for (let event of monthly)
-    if (event.mday === mday)
-      events.push({
-        name: event.event,
-        time: event.time + " " +
-          (event.event === "逆襲のカバちゃん" ? "(1時間)" : "(12時間)")
-      })
-  return events
+let notifHour = function (hour, todayEvents, eventPolicy) {
+  let message = formatHourMessage(hour, todayEvents)
+  bot.say({
+    channel: "bot-notification",
+    text: event.time + " " + names[event.name - 1]
+  })
 }
 
-let parseWeek = function (event) {
-  if (event.event.length === 1)
-    return { name: event.event[0], time: event.time }
-  let events = []
-  for (let name of event.event)
-    events.push({ name: name, time: event.time })
-  return events
-}
-
-let formatDayMessage = function (events) {
-  let header = "今日のイベントはこんな感じにゃ"
-  let contents = events.reduce((a, e) => a + e.time + " " + e.name + "\n", "")
-  return header + contents
-}
-
-// initialize
+// initialize bot
 let controller = Botkit.slackbot()
 let bot = controller.spawn({ token: process.env.DB_TOKEN })
   .startRTM(err => { if (err) throw new Error('Could not connect to Slack') })
-
-// hear the direct message
-controller.hears(["hello"], ["direct_message", "direct_mention", "mention"],
-  (bot, message) => bot.reply(message, 'hello! I am bot!!'))
 
 new CronJob("00 00 00 * * *", () => {
   let now = moment()
   let mday = parseInt(now.format("DD"))
   let wday = parseInt(now.format("E"))
-  let events = getDayGuerrilla(mday, wday)
-  let message = formatDayMessage(events)
+  todayEvents = getTodayEvents(mday, wday)
+  let policy = getPolicy()
+
+  let message = getDayMessage(todayEvents, eventPolicy)
   bot.say({
     channel: "bot-notification",
     text: message
   })
 }, null, true)
 
-let notifDay = function () {
-  bot.say({
-    channel: "bot-notification",
-    text: "にゃんこ大戦争"
-  })
-}
+new CronJob("00 00 * * * *", () => {
+  let now = moment()
+  let hour = parseInt(now.format("HH"))
+  let policy = getPolicy()
 
-let notifTime = function () {
+  let message = getHourMessage(hour, todayEvents, eventPolicy)
   bot.say({
     channel: "bot-notification",
-    text: event.time + " " + names[event.name - 1]
+    text: message
   })
-}
+}, null, true)
+
+// hear the direct message
+controller.hears(["hello"], ["direct_message", "direct_mention", "mention"],
+  (bot, message) => bot.reply(message, 'hello! I am bot!!'))
+  
