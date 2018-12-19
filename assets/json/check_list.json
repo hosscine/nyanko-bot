@@ -1,62 +1,77 @@
-{
-  "ticket": {
+[
+  {
+    "alias": "ticket",
     "name": "にゃんチケ☆チャンス！",
-    "notify": true
+    "notify": false
   },
-  "kaba": {
+  {
+    "alias": "kaba",
     "name": "逆襲のカバちゃん",
-    "notify": false
-  },
-  "kaoru": {
-    "name": "逆襲のカオル君",
-    "notify": false
-  },
-  "exp": {
-    "name": "ゲリラ経験値にゃ！",
     "notify": true
   },
-  "exp-super": {
-    "name": "超ゲリラ経験値にゃ！",
+  {
+    "alias": "kaoru",
+    "name": "逆襲のカオル君",
+    "notify": true
+  },
+  {
+    "alias": "exp",
+    "name": "ゲリラ経験値にゃ！",
     "notify": false
   },
-  "trs-ja": {
+  {
+    "alias": "exp-super",
+    "name": "超ゲリラ経験値にゃ！",
+    "notify": true
+  },
+  {
+    "alias": "trs-ja",
     "name": "トレジャー☆フェスティバル（日本編）",
     "notify": false
   },
-  "trs-fu": {
+  {
+    "alias": "trs-fu",
     "name": "トレジャー☆フェスティバル（未来編）",
     "notify": false
   },
-  "mat-brick": {
+  {
+    "alias": "mat-brick",
     "name": "レンガと宇宙石の洞窟",
     "notify": false
   },
-  "mat-coal": {
+  {
+    "alias": "mat-coal",
     "name": "備長炭と謎の骨の島",
     "notify": false
   },
-  "mat-wing": {
+  {
+    "alias": "mat-wing",
     "name": "羽根と歯車と黄金の岬",
     "notify": false
   },
-  "tuesday": {
+  {
+    "alias": "tuesday",
     "name": "ゲリラ火曜ステージ",
     "notify": false
   },
-  "wednesday": {
+  {
+    "alias": "wednesday",
     "name": "ゲリラ水曜ステージ",
     "notify": false
   },
-  "thursday": {
+  {
+    "alias": "thursday",
     "name": "ゲリラ木曜ステージ",
     "notify": false
   },
-  "friday": {
+  {
+    "alias": "friday",
     "name": "ゲリラ金曜ステージ",
     "notify": false
   },
-  "monday": {
+  {
+    "alias": "monday",
     "name": "ゲリラ月曜ステージ",
     "notify": false
   }
-}
+]

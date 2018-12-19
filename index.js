@@ -7,24 +7,36 @@ let { WebClient } = require('@slack/client')
 let nyanko = require("./assets/js/nyanko.js")
 require("dotenv").config()
 
-new CronJob("00 00 00 * * *", () => {
-  // initializeEvents()
+let todayEvents
+
+/*
+  Posting per day
+*/
+postDay = function() {
   initializeEvents()
   let policy = nyanko.readPolicy()
-
   let message = nyanko.getDayMessage(todayEvents, policy)
   post(message)
-}, null, true)
+}
 
-new CronJob("00 00 * * * *", () => {
+/*
+  Posting per hour
+*/
+postHour = function() {
   if (!todayEvents) initializeEvents()
   let policy = nyanko.readPolicy()
   let hour = parseInt(moment().format("HH"))
+  let message = nyanko.getHourMessage(hour, todayEvents, policy)
+  if(message) post(message)
+}
 
-  let message = nyanko.getDayMessage(todayEvents, policy)
-  post(message)
-}, null, true)
+new CronJob("00 00 00 * * *", postDay, null, true)
+new CronJob("00 00 * * * *", postHour, null, true)
 
+
+/*
+  Slack API
+*/
 // An access token (from your Slack app or custom integration - xoxa, xoxp, or xoxb)
 const web = new WebClient(process.env.DB_TOKEN)
 // This argument can be a channel ID, a DM ID, a MPDM ID, or a group ID

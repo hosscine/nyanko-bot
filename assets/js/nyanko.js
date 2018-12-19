@@ -7,11 +7,11 @@ module.exports = {
 
   getTodayEvents(mday, wday) {
     let events = []
-  
+
     for (let event of weekly)
       if (event.event[0] && event.wday === wday)
         events = events.concat(this.parseWeek(event))
-  
+
     for (let event of monthly)
       if (event.mday === mday)
         events.push({
@@ -35,7 +35,18 @@ module.exports = {
   },
 
   getHourMessage(hour, events, policy) {
+    let notify = []
+    for (let event of events) {
+      let ehour = parseInt(event.time.substring(0, 2))
+      if (ehour === hour)
+        for (let p of policy)
+          if (p.name === event.name)
+            if (p.notify)
+              notify.push(event)
+    }
 
+    if (notify.length === 0) return
+    else return this.formatWeekMessage(notify)
   },
 
   parseWeek(event) {
@@ -51,5 +62,11 @@ module.exports = {
     let header = "今日のイベントはこんな感じにゃ\n"
     let contents = events.reduce((a, e) => a + e.time + " " + e.name + "\n", "")
     return header + contents
+  },
+
+  formatWeekMessage(events) {
+    let header = "イベントが" + events[0].time.substring(0, 2) + "時から始まるにゃ\n"
+    let contents = events.reduce((a, e) => a + "- " + e.name + "\n", "")
+    return header + contents.substring(0, contents.length - 1)
   }
 }
