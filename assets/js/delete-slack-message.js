@@ -8,7 +8,7 @@ require("dotenv").config()
 
 // CONFIGURATION #######################################################################################################
 
-const token = process.env.DB_TOKEN; // You can learn it from: https://api.slack.com/custom-integrations/legacy-tokens 
+const token = process.env.DB_DLTOKEN; // You can learn it from: https://api.slack.com/custom-integrations/legacy-tokens 
 const channel = process.env.DB_CHANNEL;
 
 // GLOBALS #############################################################################################################
@@ -76,40 +76,42 @@ function deleteMessage() {
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-function processHistory() {
-  
-  https.get(historyApiUrl + nextCursor, function (res) {
+module.exports = {
+  processHistory() {
 
-    let body = '';
+    https.get(historyApiUrl + nextCursor, function (res) {
 
-    res.on('data', function (chunk) {
-      body += chunk;
-    });
+      let body = '';
 
-    res.on('end', function () {
+      res.on('data', function (chunk) {
+        body += chunk;
+      });
 
-      nextCursor = null;
+      res.on('end', function () {
 
-      const response = JSON.parse(body);
+        nextCursor = null;
 
-      if (response.messages && response.messages.length > 0) {
+        const response = JSON.parse(body);
 
-        if (response.has_more) {
-          nextCursor = response.response_metadata.next_cursor;
+        if (response.messages && response.messages.length > 0) {
+
+          if (response.has_more) {
+            nextCursor = response.response_metadata.next_cursor;
+          }
+
+          for (let i = 0; i < response.messages.length; i++) {
+            messages.push(response.messages[i].ts);
+          }
+
+          deleteMessage();
         }
-
-        for (let i = 0; i < response.messages.length; i++) {
-          messages.push(response.messages[i].ts);
-        }
-
-        deleteMessage();
-      }
+      });
+    }).on('error', function (e) {
+      console.error("Got an error: ", e);
     });
-  }).on('error', function (e) {
-    console.error("Got an error: ", e);
-  });
+  }
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-processHistory();
+// processHistory();

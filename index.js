@@ -5,6 +5,7 @@ let moment = require("moment")
 let { CronJob } = require("cron")
 let { WebClient } = require('@slack/client')
 let nyanko = require("./assets/js/nyanko.js")
+let deletePosts = require("./assets/js/delete-slack-message.js").processHistory
 require("dotenv").config()
 
 let todayEvents
@@ -12,7 +13,7 @@ let todayEvents
 /*
   Posting per day
 */
-postDay = function() {
+postDay = function () {
   initializeEvents()
   let policy = nyanko.readPolicy()
   let message = nyanko.getDayMessage(todayEvents, policy)
@@ -22,15 +23,16 @@ postDay = function() {
 /*
   Posting per hour
 */
-postHour = function() {
+postHour = function () {
   if (!todayEvents) initializeEvents()
   let policy = nyanko.readPolicy()
   let hour = parseInt(moment().format("HH"))
   let message = nyanko.getHourMessage(hour, todayEvents, policy)
-  if(message) post(message)
+  if (message) post(message)
 }
 
 new CronJob("00 00 00 * * *", postDay, null, true)
+new CronJob("00 59 23 * * *", deletePosts, null, true)
 new CronJob("00 00 * * * *", postHour, null, true)
 
 
@@ -50,9 +52,12 @@ let post = function (message) {
     .catch(console.error)
 }
 
-let initializeEvents = function() {
+let initializeEvents = function () {
   let now = moment()
   let mday = parseInt(now.format("DD"))
   let wday = parseInt(now.format("E"))
   todayEvents = nyanko.getTodayEvents(mday, wday)
 }
+
+// postDay()
+// postHour()
