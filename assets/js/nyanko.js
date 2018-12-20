@@ -65,7 +65,8 @@ module.exports = {
   },
 
   formatWeekMessage(events) {
-    let header = "イベントが" + events[0].time.substring(0, 2) + "時から始まるにゃ\n"
+    let time = events[0].time
+    let header = "イベントが" + time.substring(0, time.length - 4) + "時から始まるにゃ\n"
     let contents = events.reduce((a, e) => a + "- " + e.name + "\n", "")
     return header + contents.substring(0, contents.length - 1)
   }
