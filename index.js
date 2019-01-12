@@ -4,8 +4,8 @@
 let moment = require("moment")
 let { CronJob } = require("cron")
 let { WebClient } = require('@slack/client')
+let { processHistory } = require("./assets/js/delete-slack-message.js")
 let nyanko = require("./assets/js/nyanko.js")
-let deletePosts = require("./assets/js/delete-slack-message.js").processHistory
 require("dotenv").config()
 
 let todayEvents
@@ -31,9 +31,13 @@ postHour = function () {
   if (message) post(message)
 }
 
+deletePosts = function () {
+  processHistory()
+}
+
 new CronJob("00 00 00 * * *", postDay, null, true)
-new CronJob("00 59 23 * * *", deletePosts, null, true)
-new CronJob("00 00 * * * *", postHour, null, true)
+new CronJob("00 58 23 * * *", deletePosts, null, true)
+new CronJob("10 00 * * * *", postHour, null, true)
 
 
 /*
